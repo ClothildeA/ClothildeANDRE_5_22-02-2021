@@ -1,0 +1,31 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f2f2f2;
+}
+
+.navbar-brand::before {
+    content: '\f54e';
+    font-family: 'Font Awesome 5 free';
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 10px;
+}
+
+img{
+    width: 100%;
+}
+
+.choose-opt, .option {
+    font-size: 0.9rem;
+}
+
+
+.cart::after {
+    content: '\f218';
+    font-family: 'Font Awesome 5 free';
+    color: #b490f7;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 5px;
+}
