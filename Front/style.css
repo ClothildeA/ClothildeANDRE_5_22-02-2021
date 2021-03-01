@@ -3,13 +3,13 @@ body {
     background-color: #f2f2f2;
 }
 
+.navbar-brand {
+    font-family: 'Special Elite';
+}
 .navbar-brand::before {
-    content: '\f54e';
-    font-family: 'Font Awesome 5 free';
-    color: #fff;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin: 10px;
+    content: url(img/photo.png);
+    position: absolute;
+    top: 0%;
 }
 
 img{

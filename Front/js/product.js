@@ -17,7 +17,7 @@ fetch(url) //recherche dans l'url
 
             let main = document.getElementById('main');
             let row = document.createElement('DIV');
-            row.className = "row bg-white m-3 shadow-sm";
+            row.className = "row bg-white m-3 shadow-sm";        
             main.appendChild(row);
 
             elements.forEach(element => { //création de la boucle pour trouver les infos des items dans l'API
@@ -79,11 +79,14 @@ fetch(url) //recherche dans l'url
 
                     ///////////////////////// Options du produit //////////////////////
 
-                    //Création de la div englobant txt et options
+                    //Création du formulaire englobant la div des options et le button d'Ajout au panier
+                    let divForm = document.createElement('form');
+                    cardBody.appendChild(divForm);
 
+                    //Création de la div englobant txt et options
                     let divSelect = document.createElement('div');
                     divSelect.className = 'd-flex justify-content-between justify-content-lg-around';
-                    cardBody.appendChild(divSelect);
+                    divForm.appendChild(divSelect);
 
                     //Ajout du texte 'Choisir une option'
                     let select = document.createElement('p');
@@ -94,12 +97,12 @@ fetch(url) //recherche dans l'url
                     //Création du formulaire contenant les options
                     let selectList = document.createElement('select');
                     selectList.className = 'form-select';
+                    selectList.id = 'list';
                     divSelect.appendChild(selectList);
                     selectList.innerHTML = element.lenses;
 
                     //Récupération du tableau dans l'api
                     let array = element.lenses;
-/////////////////   array.unshift('- Lentille -');
 
                     //Boucle pour afficher toutes les options
                     for (let i = 0; i < array.length; i++) {
@@ -112,13 +115,66 @@ fetch(url) //recherche dans l'url
                     }
 
                     //Bouton permettant d'ajouter au panier
-                    let cardBtn = document.createElement('a');
-                    cardBtn.href = "product.html?id=" + element._id;            //lien pour récupérer l'id du produit
+                    let cardBtn = document.createElement('button');
+                    const numberArticle = document.getElementById('numberArticle');
                     cardBtn.className = 'btn btn-light m-3 p-2 shadow cart';
+                    cardBtn.id = 'addToCart'
                     cardBtn.textContent = 'Ajouter';
-                    cardBody.appendChild(cardBtn);
+                    divForm.appendChild(cardBtn);
+
+
+                    //Création d'un tableau vide à remplir avec le panier
+                    let cartArray=[];
+
+                    //Condition pour ajouter au Panier
+                    if(localStorage.getItem('panier')){ //On vérifie que le panier soit vide
+                        cartArray=JSON.parse(localStorage.getItem('panier'));
+                        let isPresent=false;
+                        
+                        cartArray.forEach(element2=>{ //On parcourt le tableau
+                            if(element2._id==element._id && element2.lense==element.lense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
+                                element2.qty++;
+                                isPresent=true;
+                            }
+                        })
+                    }
+                    if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le panier
+                        let cartEnter={ // On ajoute les éléments suivants
+                            'id':element._id,
+                            'name':element.name,
+                            'price':element.price,
+                            'lense':element.lenses,
+                            'qty':1
+                        }
+
+                        // Ajout du des nouveaux éléments au tableau
+                        cartArray.push=cartEnter;
+                        
+                    }
+                    
+                    //ajout du tableau converti en JSON au localStorage
+                    localStorage.setItem('panier', JSON.stringify(cartArray));
+
+                   
+
+                    addToCart.onclick = () => {
+
+                        numberArticle.textContent ++;
+                    };
+            
+                    //Enregistrement des données en localStorage
+
+                    //localStorage.dataLense = selectedText;
+                    //localStorage.dataName = element.name;
+                    //localStorage.dataId = element._id;
+                    //localStorage.dataPrice = element.price /= 100;
+                    //localStorage.dataUrl = document.location.href;
+
+
+
 
                 }
             });
         })
     });
+
