@@ -5,11 +5,14 @@ body {
 
 .navbar-brand {
     font-family: 'Special Elite';
+    z-index: 1;
 }
 .navbar-brand::before {
     content: url(img/photo.png);
     position: absolute;
-    top: 0%;
+    top: 5px;
+    left: 6px;
+    z-index: -1;
 }
 
 img{

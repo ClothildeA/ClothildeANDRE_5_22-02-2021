@@ -79,14 +79,11 @@ fetch(url) //recherche dans l'url
 
                     ///////////////////////// Options du produit //////////////////////
 
-                    //Création du formulaire englobant la div des options et le button d'Ajout au panier
-                    let divForm = document.createElement('form');
-                    cardBody.appendChild(divForm);
 
                     //Création de la div englobant txt et options
                     let divSelect = document.createElement('div');
                     divSelect.className = 'd-flex justify-content-between justify-content-lg-around';
-                    divForm.appendChild(divSelect);
+                    cardBody.appendChild(divSelect);
 
                     //Ajout du texte 'Choisir une option'
                     let select = document.createElement('p');
@@ -120,61 +117,56 @@ fetch(url) //recherche dans l'url
                     cardBtn.className = 'btn btn-light m-3 p-2 shadow cart';
                     cardBtn.id = 'addToCart'
                     cardBtn.textContent = 'Ajouter';
-                    divForm.appendChild(cardBtn);
+                    cardBody.appendChild(cardBtn);
 
-
-                    //Création d'un tableau vide à remplir avec le panier
-                    let cartArray=[];
-
-                    //Condition pour ajouter au Panier
-                    if(localStorage.getItem('panier')){ //On vérifie que le panier soit vide
-                        cartArray=JSON.parse(localStorage.getItem('panier'));
-                        let isPresent=false;
-                        
-                        cartArray.forEach(element2=>{ //On parcourt le tableau
-                            if(element2._id==element._id && element2.lense==element.lense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
-                                element2.qty++;
-                                isPresent=true;
-                            }
-                        })
-                    }
-                    if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le panier
-                        let cartEnter={ // On ajoute les éléments suivants
-                            'id':element._id,
-                            'name':element.name,
-                            'price':element.price,
-                            'lense':element.lenses,
-                            'qty':1
-                        }
-
-                        // Ajout du des nouveaux éléments au tableau
-                        cartArray.push=cartEnter;
-                        
-                    }
-                    
-                    //ajout du tableau converti en JSON au localStorage
-                    localStorage.setItem('panier', JSON.stringify(cartArray));
-
-                   
-
-                    addToCart.onclick = () => {
+                    addToCart.addEventListener('click', () => {
 
                         numberArticle.textContent ++;
-                    };
-            
-                    //Enregistrement des données en localStorage
-
-                    //localStorage.dataLense = selectedText;
-                    //localStorage.dataName = element.name;
-                    //localStorage.dataId = element._id;
-                    //localStorage.dataPrice = element.price /= 100;
-                    //localStorage.dataUrl = document.location.href;
-
-
-
-
+                    
+                        let select = document.getElementById('list');
+                        response.lenses = select.options[select.selectedIndex].value;
+                        addItemCart(response);
+                    });
                 }
             });
         })
-    });
+});
 
+
+
+
+
+function addItemCart (element) {
+//Création d'un tableau vide à remplir avec le panier
+let cartArray=[];
+
+//Condition pour ajouter au Panier
+if(localStorage.getItem('panier')) { //On vérifie que le panier soit vide
+    cartArray = JSON.parse(localStorage.getItem('panier'));
+    let isPresent = false;
+
+    cartArray.forEach(element2=>{ //On parcourt le tableau
+        if(element2._id == element._id && element2.lense == element.lense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
+            element2.qty++;
+            isPresent=true;
+        }
+    })
+}
+if(isPresent=false){ //si l'élément à ajouter n'est pas déjà présent dans le panier
+    let cartEnter={ // On ajoute les éléments suivants
+        'id':element._id,
+        'name':element.name,
+        'price':element.price,
+        'lense':element.lenses,
+        'qty':1
+    }
+
+    // Ajout du des nouveaux éléments au tableau
+    cartArray.push=cartEnter;
+    
+}
+
+//ajout du tableau converti en JSON au localStorage
+localStorage.setItem('panier', JSON.stringify(cartArray));
+
+}
