@@ -1,6 +1,5 @@
 let url = 'http://localhost:3000/api/cameras';
 
-
 //Recupère les paramètres passés dans l'url du produit
 const chosenCamera = window.location.search;
 
@@ -33,8 +32,6 @@ fetch(url) //recherche dans l'url
                     let imgProduct = document.createElement('img');
                     imgProduct.src = element.imageUrl;
                     divImg.appendChild(imgProduct);
-
-
 
                     // div description du produit
                     let divDescription = document.createElement('div');
@@ -114,18 +111,19 @@ fetch(url) //recherche dans l'url
                     //Bouton permettant d'ajouter au panier
                     let cardBtn = document.createElement('button');
                     const numberArticle = document.getElementById('numberArticle');
-                    cardBtn.className = 'btn btn-light m-3 p-2 shadow cart';
+                    cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon';
                     cardBtn.id = 'addToCart'
                     cardBtn.textContent = 'Ajouter';
                     cardBody.appendChild(cardBtn);
 
                     addToCart.addEventListener('click', () => {
 
-                        numberArticle.textContent ++;
                     
                         let select = document.getElementById('list');
-                        response.lenses = select.options[select.selectedIndex].value;
-                        addItemCart(response);
+                        element.selectedLense = select.options[select.selectedIndex].value;
+
+                        addItemCart(element);
+                        alert('Votre produit a été ajouté au panier!');
                     });
                 }
             });
@@ -133,40 +131,44 @@ fetch(url) //recherche dans l'url
 });
 
 
+//FONCTION - AJOUT AU PANIER//
+function addItemCart(newProduct) {
 
-
-
-function addItemCart (element) {
 //Création d'un tableau vide à remplir avec le panier
-let cartArray=[];
+let cartArray = [];
+let isPresent = false;
+numberArticle.textContent = localStorage.length;
 
 //Condition pour ajouter au Panier
-if(localStorage.getItem('panier')) { //On vérifie que le panier soit vide
+if(localStorage.getItem('panier')) {
+    
+    //On vérifie ce que contient le panier
     cartArray = JSON.parse(localStorage.getItem('panier'));
-    let isPresent = false;
 
-    cartArray.forEach(element2=>{ //On parcourt le tableau
-        if(element2._id == element._id && element2.lense == element.lense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
-            element2.qty++;
-            isPresent=true;
+    cartArray.forEach (elementInCart => { //On parcourt le tableau
+        if(elementInCart.id == newProduct._id && elementInCart.lense == newProduct.selectedLense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
+            elementInCart.qty++;
+            isPresent = true;
+            numberArticle.textContent = elementInCart.qty + localStorage.length;
         }
     })
 }
-if(isPresent=false){ //si l'élément à ajouter n'est pas déjà présent dans le panier
-    let cartEnter={ // On ajoute les éléments suivants
-        'id':element._id,
-        'name':element.name,
-        'price':element.price,
-        'lense':element.lenses,
+
+if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le panier
+    let cartEnter = { // On ajoute les éléments suivants
+        'id':newProduct._id,
+        'name':newProduct.name,
+        'price':newProduct.price,
+        'lense':newProduct.selectedLense,
         'qty':1
     }
 
     // Ajout du des nouveaux éléments au tableau
-    cartArray.push=cartEnter;
-    
+    cartArray.push(cartEnter);
 }
 
 //ajout du tableau converti en JSON au localStorage
+
 localStorage.setItem('panier', JSON.stringify(cartArray));
 
 }

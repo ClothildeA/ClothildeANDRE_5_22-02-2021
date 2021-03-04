@@ -24,7 +24,7 @@ img{
 }
 
 
-.cart::after {
+.cart_icon::after {
     content: '\f218';
     font-family: 'Font Awesome 5 free';
     color: #b490f7;
