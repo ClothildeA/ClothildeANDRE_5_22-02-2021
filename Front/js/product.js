@@ -130,6 +130,8 @@ fetch(url) //recherche dans l'url
         })
 });
 
+//let numberArticle = document.getElementById('numberArticle');
+//numberArticle.textContent = localStorage.length;
 
 //FONCTION - AJOUT AU PANIER//
 function addItemCart(newProduct) {
@@ -137,7 +139,7 @@ function addItemCart(newProduct) {
 //Création d'un tableau vide à remplir avec le panier
 let cartArray = [];
 let isPresent = false;
-numberArticle.textContent = localStorage.length;
+
 
 //Condition pour ajouter au Panier
 if(localStorage.getItem('panier')) {
@@ -149,7 +151,6 @@ if(localStorage.getItem('panier')) {
         if(elementInCart.id == newProduct._id && elementInCart.lense == newProduct.selectedLense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
             elementInCart.qty++;
             isPresent = true;
-            numberArticle.textContent = elementInCart.qty + localStorage.length;
         }
     })
 }
@@ -158,17 +159,18 @@ if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le pa
     let cartEnter = { // On ajoute les éléments suivants
         'id':newProduct._id,
         'name':newProduct.name,
-        'price':newProduct.price,
+        'price':newProduct.price/100,
         'lense':newProduct.selectedLense,
         'qty':1
     }
 
     // Ajout du des nouveaux éléments au tableau
     cartArray.push(cartEnter);
+
 }
 
 //ajout du tableau converti en JSON au localStorage
-
-localStorage.setItem('panier', JSON.stringify(cartArray));
+ //numberArticle.textContent = newProduct.qty;le total de qty -> elementInCart.qty ou localStorage.length;
+ localStorage.setItem('panier', JSON.stringify(cartArray));
 
 }
