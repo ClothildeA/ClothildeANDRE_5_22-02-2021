@@ -15,8 +15,17 @@ fetch(url) //recherche dans l'url
         response.json().then((elements) => {
 
             let main = document.getElementById('main');
+
+            //div alert dynamique - 'produit ajouté au panier'
+            let divAlert = document.createElement('div');
+            divAlert.className = 'alert alert-success text-center hidden';
+            divAlert.id = 'alert';
+            divAlert.setAttribute('role', 'alert');
+            divAlert.textContent = 'Votre produit a bien été ajouté au panier!'
+            main.appendChild(divAlert);
+
             let row = document.createElement('DIV');
-            row.className = "row bg-white m-3 shadow-sm";        
+            row.className = "row bg-white m-3 shadow-sm radius";        
             main.appendChild(row);
 
             elements.forEach(element => { //création de la boucle pour trouver les infos des items dans l'API
@@ -25,7 +34,7 @@ fetch(url) //recherche dans l'url
 
                     //div IMAGE
                     let divImg = document.createElement('div');
-                    divImg.className = 'col-12 col-md-6 text-center p-0 d-flex align-items-center';
+                    divImg.className = 'col-12 col-md-6 text-center p-2 d-flex align-items-center';
                     row.appendChild(divImg);
 
                     //image du produit (img)
@@ -35,12 +44,12 @@ fetch(url) //recherche dans l'url
 
                     // div description du produit
                     let divDescription = document.createElement('div');
-                    divDescription.className = 'col-12 col-md-6 text-center d-flex align-items-stretch';
+                    divDescription.className = 'col-12 col-md-6 p-0 text-center d-flex align-items-stretch';
                     row.appendChild(divDescription);
 
                     //card du produit (card)
                     let cardDescription = document.createElement('DIV')
-                    cardDescription.className = 'card border-0';
+                    cardDescription.className = 'border-0';
                     divDescription.appendChild(cardDescription);
 
                     //contenu des caractéristiques (body)
@@ -112,7 +121,8 @@ fetch(url) //recherche dans l'url
                     let cardBtn = document.createElement('button');
                     const numberArticle = document.getElementById('numberArticle');
                     cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon';
-                    cardBtn.id = 'addToCart'
+                    cardBtn.id = 'addToCart';
+                    cardBtn.setAttribute('onclick', 'alertAnimation');
                     cardBtn.textContent = 'Ajouter';
                     cardBody.appendChild(cardBtn);
 
@@ -123,15 +133,20 @@ fetch(url) //recherche dans l'url
                         element.selectedLense = select.options[select.selectedIndex].value;
 
                         addItemCart(element);
-                        alert('Votre produit a été ajouté au panier!');
+                        alertAnimation();
                     });
                 }
             });
         })
 });
 
-//let numberArticle = document.getElementById('numberArticle');
-//numberArticle.textContent = localStorage.length;
+function alertAnimation(){
+    let alertClass = document.getElementById('alert');
+    alertClass.classList.remove('fadeAlert');
+    alertClass.classList.remove('hidden');
+    void alertClass.offsetWidth; // trigger reflow
+    alertClass.classList.add('fadeAlert'); 
+}
 
 //FONCTION - AJOUT AU PANIER//
 function addItemCart(newProduct) {
@@ -161,9 +176,9 @@ if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le pa
         'name':newProduct.name,
         'price':newProduct.price/100,
         'lense':newProduct.selectedLense,
+        'image':newProduct.imageUrl,
         'qty':1
     }
-
     // Ajout du des nouveaux éléments au tableau
     cartArray.push(cartEnter);
 

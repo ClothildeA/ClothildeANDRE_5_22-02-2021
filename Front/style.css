@@ -3,7 +3,11 @@ body {
     background-color: #f2f2f2;
 }
 
-.navbar-brand {
+header {
+    z-index: 5;
+}
+
+.navbar-brand, h1, h2, .nav-link {
     font-family: 'Special Elite';
     z-index: 1;
 }
@@ -15,14 +19,20 @@ body {
     z-index: -1;
 }
 
+.card, .radius {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+}
+
 img{
     width: 100%;
+    border-radius: 10px;
 }
 
 .choose-opt, .option {
     font-size: 0.9rem;
 }
-
 
 .cart_icon::after {
     content: '\f218';
@@ -31,4 +41,83 @@ img{
     font-weight: 600;
     font-size: 1.3rem;
     margin: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+.fadeAlert {
+    -webkit-animation: fade-in 4s 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	animation: fade-in 4s 1 cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    position: absolute;
+    width: 60%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 7%;
+    z-index: 1;
+}
+
+@-webkit-keyframes fade-in {
+    0% {
+        -webkit-transform: translateY(-50px);
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    5% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    95% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(-50px);
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+        -webkit-transform: translateY(-50px);
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    5% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    95% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: translateY(-50px);
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+  }
+
+.trash {
+    border-radius: 50%;
+    margin: 0 20px;
+}
+
+.bg {
+    max-width: 700px;
+    width: 100%;
+    border: none;
+    border-radius: 15px;
+}
+
+.needs-validation {
+    max-width: 700px;
+    width: 100%;
 }
