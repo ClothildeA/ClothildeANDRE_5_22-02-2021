@@ -53,7 +53,7 @@ function quantityDisplay () {
             </div>
             <div class="d-flex align-items-baseline justify-content-between justify-content-lg-around pb-4 p-3 total">
                 <p class="total-price m-0"><strong>Total: ${totalPrice} €</strong></p>
-                <button class="cancel btn btn-sm btn-danger shadow-sm">
+                <button class="cancel btn btn-sm btn-danger shadow-sm" id="clearCartBtn" onclick="confirmAlertEmptyCart()">
                     Annuler ma commande
                 </button>
             </div>
@@ -83,11 +83,11 @@ function quantityDisplay () {
             </div>
 
             <div class="form-row">
-                <div class="col-6 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="validationCustom04">Adresse</label>
                     <input type="text" class="form-control" id="validationCustomUsername" placeholder="Adresse" aria-describedby="inputGroupPrepend" required>
                 </div>
-                <div class="col-6 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="validationCustom04">Complément d'adresse</label>
                     <input type="text" class="form-control" id="validationCustomUsername" placeholder="Adresse" aria-describedby="inputGroupPrepend" required>
                 </div>
@@ -126,23 +126,48 @@ function quantityDisplay () {
     decreaseQtyById.addEventListener('click', function(){
         decreaseQty(e, itemDetail);
     });
-        
-        
+
+    let clearCartBtn = document.getElementById('clearCartBtn');
+    console.log(clearCartBtn);
+
+    clearCartBtn.addEventListener('click', () => {
+        clearCart();
+        alertEmptyCart();
+    });
 
         
     } else { //alerte panier vide
-        let htmlError=
-        `<div class="alert alert-info m-3" role="alert">
-            Votre panier est vide.
-        </div>`
-        itemSelection.innerHTML = htmlError;
+        alertEmptyCart();
+
     }
 }
 
 
+//fonction pour vider la totalité du panier dans localStorage
+function clearCart () {
+    localStorage.removeItem('panier');
+}
+
+//fonction info panier vide
+function alertEmptyCart () {
+let htmlError=
+`<div class="alert alert-info m-3" role="alert">
+    Votre panier est vide.
+</div>`;
+itemSelection.innerHTML = htmlError;
+}
+
+//fonction pour confirmer l'annulation du panier, puis le vider si click OK
+function confirmAlertEmptyCart () {
+    if (confirm ('Cette action va vider le contenu de votre Panier, si vous souhaitez annuler votre commande, veuillez cliquez sur OK')) {
+        clearCart();
+        alertEmptyCart();
+    }
+}
 
 //fonction pour diminuer la quantité
 function decreaseQty (item) {
     let index = '';
     item[index].qty--;
 }
+

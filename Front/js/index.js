@@ -1,9 +1,9 @@
 let url = 'http://localhost:3000/api/cameras';
 
+
 fetch(url) //recherche dans l'url
     .then((response) => {
         response.json().then((elements) => {
-
             let main = document.getElementById('main');
             let row = document.createElement('DIV');
             row.className = "row";
@@ -55,4 +55,18 @@ fetch(url) //recherche dans l'url
                 cardBody.appendChild(cardBtn);
             });
         })
-    });
+    })
+
+.catch (e => {
+    errorMessage();
+});
+
+function errorMessage() {
+    let divError = document.createElement('div');
+    divError.className = 'alert alert-warning';
+    divError.setAttribute('role', 'alert');
+    divError.textContent = "Oups! Il semble qu'il y ait un problème de réseau. Veuillez réessayer plus tard.";
+    let main = document.getElementById('main');
+
+    main.appendChild('divError');
+}

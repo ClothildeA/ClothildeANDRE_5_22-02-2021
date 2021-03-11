@@ -61,7 +61,7 @@ fetch(url) //recherche dans l'url
                     let cardTitle = document.createElement('p');
                     cardTitle.className = 'card-title m-3 text-left font-weight-bold';
                     cardBody.appendChild(cardTitle);
-                    cardTitle.innerHTML = element.name;                         //récupération de l'info
+                    cardTitle.innerHTML = element.name; //récupération de l'info
 
                     //Description head
                     let descriptionHead = document.createElement('p');
@@ -119,7 +119,6 @@ fetch(url) //recherche dans l'url
 
                     //Bouton permettant d'ajouter au panier
                     let cardBtn = document.createElement('button');
-                    const numberArticle = document.getElementById('numberArticle');
                     cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon';
                     cardBtn.id = 'addToCart';
                     cardBtn.setAttribute('onclick', 'alertAnimation');
@@ -132,26 +131,27 @@ fetch(url) //recherche dans l'url
                         let select = document.getElementById('list');
                         element.selectedLense = select.options[select.selectedIndex].value;
 
-                        addItemCart(element);
-                        alertAnimation();
+                        addItemCart(element); // appel de la fonction d'ajout au panier
+                        alertAnimation(); // appel de la fonction d'animation de l'alerte
                     });
                 }
             });
         })
 });
 
+////// FONCTION - ANIMATION ALERTE //////
 function alertAnimation(){
     let alertClass = document.getElementById('alert');
     alertClass.classList.remove('fadeAlert');
     alertClass.classList.remove('hidden');
-    void alertClass.offsetWidth; // trigger reflow
+    void alertClass.offsetWidth;
     alertClass.classList.add('fadeAlert'); 
 }
 
-//FONCTION - AJOUT AU PANIER//
+/////// FONCTION - AJOUT AU PANIER ///////
 function addItemCart(newProduct) {
 
-//Création d'un tableau vide à remplir avec le panier
+//Création d'un tableau vide à remplir avec le contenu du panier
 let cartArray = [];
 let isPresent = false;
 
