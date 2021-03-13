@@ -7,6 +7,7 @@ quantityDisplay()
 function quantityDisplay () {
 
     if (localStorage.getItem('panier') !== null) {
+        
         let itemDetail = JSON.parse(localStorage.getItem('panier')); //on récupère le panier en le 'traduisant' grâce à parse
         totalPrice = 0; //on initialise la quantité à 0
         totalArticle = 0;
@@ -29,10 +30,10 @@ function quantityDisplay () {
                         <p class="card-text m-0">Option: ${product.lense}</p>
                         <p class="card-text m-0">Prix: ${(product.price * product.qty)} €</p>
                         <div class="d-flex align-items-center">
-                        <p class="card-text m-0" id="${product._id}">Quantité:
-                            <button type="button" class="btn btn-light btn-sm decrease_btn" id="${index}"> - </button>
+                        <p class="card-text m-0" >Quantité:
+                            <button type="button" class="btn btn-light btn-sm decrease_btn" id="${1 + product.id + product.lense}"> - </button>
                             ${product.qty} 
-                            <button type="button" class="btn btn-light btn-sm increase_btn" id="${index}"> + </button>
+                            <button type="button" class="btn btn-light btn-sm increase_btn" id="${2 + product.id + product.lense}"> + </button>
                         </p>
                         <button class="btn btn-outline-dark text-end trash"><i class="far fa-trash-alt"></i></button>
                         </div>
@@ -116,29 +117,41 @@ function quantityDisplay () {
       
       itemSelection.insertAdjacentHTML('beforeend', htmlFormulaire);
 
+// ecoute du bouton +
+    let increaseBtn = document.querySelectorAll('.increase_btn');
+    increaseBtn.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            increaseQty(e, itemDetail);
+            console.log(btn.id);
+        })
+    })
 
+// ecoute du bouton -
+    let decreaseBtn = document.querySelectorAll('.decrease_btn');
+    decreaseBtn.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            decreaseQty(e, itemDetail);
+        })
+    })
 
-    let decreaseBtn = document.getElementsByClassName('decrease_btn');
-    let id = getElementById('${product._id}');
-    let decreaseQtyById = decreaseBtn.closest(id);
-    console.log(decreaseBtn);
-    console.log(decreaseQtyById);
-    decreaseQtyById.addEventListener('click', function(){
-        decreaseQty(e, itemDetail);
-    });
-
+// ecoute du bouton Trash
+    let removeProductBtn = document.querySelectorAll('.trash');
+    removeProductBtn.forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            deleteProduct(e, itemDetail);
+        })
+    })
+    
+// ecoute du bouton Annuler ma Commande
     let clearCartBtn = document.getElementById('clearCartBtn');
-    console.log(clearCartBtn);
-
     clearCartBtn.addEventListener('click', () => {
         clearCart();
         alertEmptyCart();
     });
 
-        
+    
     } else { //alerte panier vide
         alertEmptyCart();
-
     }
 }
 
@@ -166,8 +179,21 @@ function confirmAlertEmptyCart () {
 }
 
 //fonction pour diminuer la quantité
-function decreaseQty (item) {
-    let index = '';
-    item[index].qty--;
+function decreaseQty (e, item) {
+    //selection du bon id
+    //.qty--;
+    //storage stringify
+    console.log('decrease');
+}
+
+// fonction pour augmenter la quantité
+function increaseQty (e, item) {
+    //.qty++;
+    console.log('increase');
+}
+
+function deleteProduct (e, item) {
+    //.qty.length === 0;
+    console.log('delete');
 }
 
