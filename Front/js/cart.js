@@ -4,11 +4,11 @@ let totalPrice = 0; //variable dpour le prix total
 let totalArticle = 0; // variable pour le nombre total d'articles
 quantityDisplay()
 
+let itemDetail = JSON.parse(localStorage.getItem('panier')); //on récupère le panier en le 'traduisant' grâce à parse
 function quantityDisplay () {
-
-    if (localStorage.getItem('panier') !== null) {
+    // plutôt définir les données en global pour l'utiliser partout, à vérifier pour ce contexte. 
+    if (itemDetail !== null) {
         
-        let itemDetail = JSON.parse(localStorage.getItem('panier')); //on récupère le panier en le 'traduisant' grâce à parse
         totalPrice = 0; //on initialise la quantité à 0
         totalArticle = 0;
 
@@ -33,7 +33,7 @@ function quantityDisplay () {
                         <p class="card-text m-0" >Quantité:
                             <button type="button" class="btn btn-light btn-sm decrease_btn" id="${1 + product.id + product.lense}"> - </button>
                             ${product.qty} 
-                            <button type="button" class="btn btn-light btn-sm increase_btn" id="${2 + product.id + product.lense}"> + </button>
+                            <button type="button" class="btn btn-light btn-sm increase_btn" id=`2_${product.id}_${product.lense}`> + </button>// backtilts id. 
                         </p>
                         <button class="btn btn-outline-dark text-end trash"><i class="far fa-trash-alt"></i></button>
                         </div>
@@ -120,10 +120,7 @@ function quantityDisplay () {
 // ecoute du bouton +
     let increaseBtn = document.querySelectorAll('.increase_btn');
     increaseBtn.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            increaseQty(e, itemDetail);
-            console.log(btn.id);
-        })
+        btn.addEventListener('click', increaseQty)// pour utiliser une fonction callback on passe sa définion et non son appel(), on récupèrera l'évent e en premier argument
     })
 
 // ecoute du bouton -
@@ -187,9 +184,11 @@ function decreaseQty (e, item) {
 }
 
 // fonction pour augmenter la quantité
-function increaseQty (e, item) {
+function increaseQty (e) {
+	//e est donné automatiquement avec la définition de fonction passée en argument
     //.qty++;
-    console.log('increase');
+	let id = e.target.id.split("_")[1]
+    console.log(id);
 }
 
 function deleteProduct (e, item) {
