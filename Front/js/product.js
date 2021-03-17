@@ -185,7 +185,5 @@ if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le pa
 }
 
 //ajout du tableau converti en JSON au localStorage
- //numberArticle.textContent = newProduct.qty;le total de qty -> elementInCart.qty ou localStorage.length;
  localStorage.setItem('panier', JSON.stringify(cartArray));
-
 }

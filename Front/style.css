@@ -11,6 +11,12 @@ header {
     font-family: 'Special Elite';
     z-index: 1;
 }
+em {
+    font-family: 'Montserrat';
+    font-size: 1.5rem;
+    font-style: normal;
+}
+
 .navbar-brand::before {
     content: url(img/photo.png);
     position: absolute;
@@ -117,7 +123,7 @@ img{
     border-radius: 15px;
 }
 
-.needs-validation {
-    max-width: 700px;
-    width: 100%;
+.magic-box{
+    width: 200px;
+    margin: 30px;
 }
