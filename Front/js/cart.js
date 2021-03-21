@@ -2,12 +2,12 @@ let url = 'http://localhost:3000/api/cameras';
 let urlOrder = 'http://localhost:3000/api/cameras/order';
 let itemSelection = document.getElementById('main_item-selection');
 let itemDetail = JSON.parse(localStorage.getItem('panier')); //on récupère le panier en le 'traduisant' grâce à parse
-let totalPrice = 0; //variable dpour le prix total, on initialise à 0
+let totalPrice = 0; //variable pour le prix total, on initialise à 0
 let totalArticle = 0; // variable pour le nombre total d'articles
 
 quantityDisplay();
 
-function quantityDisplay () {
+function quantityDisplay (c, p) {
 
     if (itemDetail !== null && itemDetail.length !== 0) {
 
@@ -15,8 +15,10 @@ function quantityDisplay () {
 
         itemDetail.forEach ((product) => {
 
-        totalPrice = totalPrice + (product.price * product.qty);
-        totalArticle = totalArticle + product.qty;
+        totalPrice = p;
+        totalArticle = c;
+
+        
         html += 
         `<div class="product card mb-3 p-2" style="max-width: 700px;" data-productid="${product.id}" data-productlense="${product.lense}">
             <div class="row g-0">
@@ -167,11 +169,20 @@ function decreaseQty (product) {
 
 // fonction pour augmenter la quantité
 function increaseQty (product) {
+    let c = 0;
+    let p = 0;
     itemDetail.forEach ((item) => {
         if (item.id == product.dataset.productid && item.lense == product.dataset.productlense) {
             item.qty++;
             localStorage.setItem('panier', JSON.stringify(itemDetail));
-            quantityDisplay();
+            itemDetail.forEach((item2) => {
+                c += item2.qty;
+                p += item2.price * item2.qty;
+            })
+            console.log(c);
+            console.log(p);
+            quantityDisplay(c, p);
+
         }
     });
 }
@@ -244,15 +255,7 @@ function postForm(orderDetails) {
         localStorage.setItem('contact', orderDetails);
         localStorage.setItem('orderId', JSON.stringify(r.orderId));
         localStorage.setItem('total', JSON.stringify(totalPrice));
-
-        console.log('then');
-        console.log(orderDetails);
-        console.log(r.orderId);
         localStorage.removeItem('panier');
         window.location.replace("./confirm.html");
-    })
-    .catch((e) => {
-        displayError();
-        console.log(e);
     })
 }

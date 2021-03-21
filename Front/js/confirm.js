@@ -21,3 +21,7 @@ let html =
 </div>
 `
 main.innerHTML = html;
+
+localStorage.removeItem('contact');
+localStorage.removeItem('orderId');
+localStorage.removeItem('total');

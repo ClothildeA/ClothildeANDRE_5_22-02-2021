@@ -25,6 +25,21 @@ em {
     z-index: -1;
 }
 
+.jumbotron {
+    background-image: url(img/jumbo.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.title-bg {
+    background-color: rgb(44 41 42 / 52%);
+}
+.jumbotron-title {
+    font-size: 1.5rem;
+}
 .card, .radius {
     border-radius: 10px;
     border: none;
