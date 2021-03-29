@@ -80,7 +80,7 @@ fetch(url) //recherche dans l'url
                     cardPrice.className = 'card-text m-3 font-weight-bold';
                     cardBody.appendChild(cardPrice);
                     cardPrice.innerHTML = element.price;
-                    cardPrice.textContent = element.price / 100 + ' ' + '€';          //mise en forme (ajout de texte)
+                    cardPrice.textContent = element.price / 100 + ' ' + '€';//mise en forme (ajout de texte)
 
 
                     ///////////////////////// Options du produit //////////////////////
@@ -117,20 +117,27 @@ fetch(url) //recherche dans l'url
                         selectList.appendChild(option);
                     }
 
+                                        //Bouton permettant d'ajouter au panier
+                                        let cardBtnIndex = document.createElement('a');
+                                        cardBtnIndex.className = 'btn btn-outline-info m-4';
+                                        cardBtnIndex.id = 'index-btn';
+                                        cardBtnIndex.textContent = 'Retour à la liste des produits';
+                                        cardBtnIndex.setAttribute('role', 'button');
+                                        cardBtnIndex.href = 'index.html';
+                                        cardBody.appendChild(cardBtnIndex);
+
                     //Bouton permettant d'ajouter au panier
                     let cardBtn = document.createElement('button');
                     cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon';
-                    cardBtn.id = 'addToCart';
-                    cardBtn.setAttribute('onclick', 'alertAnimation');
+                    cardBtn.id = 'addtocart';
                     cardBtn.textContent = 'Ajouter';
+                    cardBtn.setAttribute('role', 'button');
                     cardBody.appendChild(cardBtn);
 
+                    let addToCart = document.getElementById('addtocart');
                     addToCart.addEventListener('click', () => {
-
-                    
                         let select = document.getElementById('list');
                         element.selectedLense = select.options[select.selectedIndex].value;
-
                         addItemCart(element); // appel de la fonction d'ajout au panier
                         alertAnimation(); // appel de la fonction d'animation de l'alerte
                     });
@@ -144,46 +151,46 @@ function alertAnimation(){
     let alertClass = document.getElementById('alert');
     alertClass.classList.remove('fadeAlert');
     alertClass.classList.remove('hidden');
-    void alertClass.offsetWidth;
+    void alertClass.offsetWidth; //renvoie la largeur totale de l'élément (essentiel pour faire fonctionner l'animation css)
     alertClass.classList.add('fadeAlert'); 
 }
 
 /////// FONCTION - AJOUT AU PANIER ///////
 function addItemCart(newProduct) {
 
-//Création d'un tableau vide à remplir avec le contenu du panier
-let cartArray = [];
-let isPresent = false;
+    //Création d'un tableau vide à remplir avec le contenu du panier
+    let cartArray = [];
+    let isPresent = false;
 
 
-//Condition pour ajouter au Panier
-if(localStorage.getItem('panier')) {
+    //Condition pour ajouter au Panier
+    if(localStorage.getItem('panier')) {
     
-    //On vérifie ce que contient le panier
-    cartArray = JSON.parse(localStorage.getItem('panier'));
+        //On vérifie ce que contient le panier
+        cartArray = JSON.parse(localStorage.getItem('panier'));
 
-    cartArray.forEach (elementInCart => { //On parcourt le tableau
-        if(elementInCart.id == newProduct._id && elementInCart.lense == newProduct.selectedLense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
-            elementInCart.qty++;
-            isPresent = true;
-        }
-    })
-}
-
-if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le panier
-    let cartEnter = { // On ajoute les éléments suivants
-        'id':newProduct._id,
-        'name':newProduct.name,
-        'price':newProduct.price/100,
-        'lense':newProduct.selectedLense,
-        'image':newProduct.imageUrl,
-        'qty':1
+        cartArray.forEach (elementInCart => { //On parcourt le tableau pour trouver une correspondance
+            if(elementInCart.id == newProduct._id && elementInCart.lense == newProduct.selectedLense){ //si l'élément à ajouter est déjà dans le panier & si il a la même lentille
+                elementInCart.qty++;
+                isPresent = true;
+            }
+        })
     }
-    // Ajout du des nouveaux éléments au tableau
-    cartArray.push(cartEnter);
 
-}
+    if(!isPresent){ //si l'élément à ajouter n'est pas déjà présent dans le panier
+        let cartEnter = { // On ajoute les éléments suivants
+            'id':newProduct._id,
+            'name':newProduct.name,
+            'price':newProduct.price/100,
+            'lense':newProduct.selectedLense,
+            'image':newProduct.imageUrl,
+            'qty':1
+        }
+        // Ajout du des nouveaux éléments au tableau
+        cartArray.push(cartEnter);
+
+    }
 
 //ajout du tableau converti en JSON au localStorage
- localStorage.setItem('panier', JSON.stringify(cartArray));
+    localStorage.setItem('panier', JSON.stringify(cartArray));
 }

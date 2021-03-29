@@ -7,6 +7,12 @@ header {
     z-index: 5;
 }
 
+.row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .navbar-brand, h1, h2, .nav-link {
     font-family: 'Special Elite';
     z-index: 1;
@@ -29,17 +35,25 @@ em {
     background-image: url(img/jumbo.jpg);
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f2f2f2;
     height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-.title-bg {
-    background-color: rgb(44 41 42 / 52%);
-}
+
 .jumbotron-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 10px;
+    color: #000;
 }
+
+.product {
+    display: flex;
+}
+
 .card, .radius {
     border-radius: 10px;
     border: none;

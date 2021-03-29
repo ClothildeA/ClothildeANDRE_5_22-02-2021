@@ -1,10 +1,12 @@
+// Création de la page de confirmation
+
 let main = document.getElementById('main');
-let contactInfo = JSON.parse(localStorage.getItem("contact"));
+let contactInfo = JSON.parse(localStorage.getItem("contact")); //analyse de la chaîne de caractères JSON et construit la valeur JavaScript ou l'objet décrit par cette chaîne
 let orderId = JSON.parse(localStorage.getItem("orderId"));
 let totalPrice = JSON.parse(localStorage.getItem('total'));
 
 let html = 
-`<h2><em>Merci de votre confiance! Votre commande a bien été enregistrée.</em></h2>
+`<h2 class="text-center"><em>Merci de votre confiance! Votre commande a bien été enregistrée.</em></h2>
 <img alt="boîte rose magique" src="./img/magic.svg" class="magic-box"/>
 <div class="card">
     <div class="card-body">
@@ -19,9 +21,15 @@ let html =
         <p id="totalprice"><b>Montant total :</b> ${totalPrice} €</p>
     </div>
 </div>
+<a class="btn btn-outline-info m-4" id="index-btn" href="index.html" role="button">Revenir à l'accueil</a>
 `
 main.innerHTML = html;
 
-localStorage.removeItem('contact');
-localStorage.removeItem('orderId');
-localStorage.removeItem('total');
+//Ecoute du bouton 'Revenir à l'accueil': vide les localStorages avant de retourner à l'accueil
+let endOfOrder = document.getElementById('index-btn');
+endOfOrder.addEventListener('click', () => {
+    localStorage.removeItem('contact');
+    localStorage.removeItem('orderId');
+    localStorage.removeItem('total');
+});
+

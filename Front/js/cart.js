@@ -2,25 +2,27 @@ let url = 'http://localhost:3000/api/cameras';
 let urlOrder = 'http://localhost:3000/api/cameras/order';
 let itemSelection = document.getElementById('main_item-selection');
 let itemDetail = JSON.parse(localStorage.getItem('panier')); //on récupère le panier en le 'traduisant' grâce à parse
-let totalPrice = 0;
+let totalPrice = 0; // variable pour le prix total
 let totalArticle = 0; // variable pour le nombre total d'articles
 
-quantityDisplay();
+//appel de la fonction d'affichage du contenu du panier
+cartDisplay();
 
-function quantityDisplay () {
+//Fonction d'affichage du contenu du panier
+function cartDisplay() {
 
-    if (itemDetail !== null && itemDetail.length !== 0) {
+    if (itemDetail !== null && itemDetail.length !== 0) { //Boucle afin d'afficher les détails si le localStorage est vide
 
         let html = '';
-        totalPrice = 0; //variable pour le prix total, on initialise à 0
-        totalArticle = 0;
-        
+        totalPrice = 0; //initialisation à 0
+        totalArticle = 0; //initialisation à 0
+
         itemDetail.forEach ((product) => {
 
-        totalPrice = totalPrice + (product.price * product.qty);
-        totalArticle = totalArticle + product.qty;
+        totalPrice = totalPrice + (product.price * product.qty); // calcul du prix total des articles présents dans le panier
+        totalArticle = totalArticle + product.qty; // calcul de la quantité totale des produits présents dans le panier
 
-        html += 
+        html += // Création de la structure HTML affichant le détails des produits du panier
         `<div class="product card mb-3 p-2" style="max-width: 700px;" data-productid="${product.id}" data-productlense="${product.lense}">
             <div class="row g-0">
                 <div class="col-md-4 d-flex align-items-center">
@@ -46,7 +48,7 @@ function quantityDisplay () {
         itemSelection.innerHTML = html;  
         })
 
-        // Affichage du récapitulatif de commande
+        // Création de la structure HTML affichant le récapitulatif de la commande
         let htmlTotal =
         `<div class="bg bg-white m-4 border border-warning">
             <div class="p-3">
@@ -56,22 +58,21 @@ function quantityDisplay () {
             </div>
             <div class="d-flex align-items-baseline justify-content-between justify-content-lg-around pb-4 p-3 total">
                 <p class="total-price m-0"><strong>Total: ${totalPrice} €</strong></p>
-                <button class="cancel btn btn-sm btn-danger shadow-sm" id="clearCartBtn" onclick="confirmAlertEmptyCart()">
+                <button class="cancel btn btn-sm btn-danger shadow-sm" id="clearCartBtn">
                     Annuler ma commande
                 </button>
             </div>
         </div>`
-        
         itemSelection.insertAdjacentHTML('beforeend', htmlTotal);
 
-        // Affichage du formulaire
+        // Création de la structure HTML affichant le formulaire
         let htmlFormulaire = 
-        `<form class="needs-validation p-5 contactform" type="submit" action="post">
+        `<form class="needs-validation p-5 contactform" type="submit" action="post" name="contactform">
             <h2 class="h5 m-2 mb-4 text-center">Informations personnelles</h2>
             <div class="form-row">
                 <div class="col mb-3">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="johnsmith@mail.com" required>
+                    <input type="email" class="form-control" id="email" name="emailvalid" placeholder="johnsmith@mail.com" required>
                 </div>
             </div>
             <div class="form-row">
@@ -99,7 +100,6 @@ function quantityDisplay () {
             </div>
             <button class="btn btn-success" id="submit">Confirmer ma commande</button>
       </form>`
-      
       itemSelection.insertAdjacentHTML('beforeend', htmlFormulaire);
 
 // Bouton +
@@ -132,19 +132,22 @@ function quantityDisplay () {
 // Bouton Annuler ma Commande
     let clearCartBtn = document.getElementById('clearCartBtn');
     clearCartBtn.addEventListener('click', () => {
-        clearCart();
-        alertEmptyCart();
+        confirmAlertEmptyCart();
     });
 
 // Bouton Commander
     let contactForm = document.querySelector('.contactform');
     contactForm.addEventListener('submit', e => {
         e.preventDefault();
-        orderDetails = getForm();
-        postForm(orderDetails);
+        if (validateEmail()) {
+            orderDetails = getForm();
+            postForm(orderDetails);            
+        } else {
+            alert("Adresse mail incorrecte");
+        }
     });
 
-// Affichage de l'info Panier Vide
+// Affichage de l'info Panier Vide si aucun article dans le panier
     } else {
         alertEmptyCart();
     }
@@ -153,46 +156,45 @@ function quantityDisplay () {
 
 ///////////// FONCTIONS /////////////
 
-//fonction pour diminuer la quantité (quand la quantité est à 0, le produit est supprimé du panier)
-function decreaseQty (product) {
+// fonction pour diminuer la quantité (quand la quantité est à 0, le produit est supprimé du panier)
+function decreaseQty(product) {
     itemDetail.forEach ((item) => { //boucle pour trouver le produit correspondant
         if (item.id == product.dataset.productid && item.lense == product.dataset.productlense) { // si l'id et la lentille du produit sélectionné (dans data-attribute) correspond
             item.qty--; // quantity -
-            localStorage.setItem('panier', JSON.stringify(itemDetail)); //ajoute la nouvelle donnée au localStorage
+            localStorage.setItem('panier', JSON.stringify(itemDetail)); //convertit la nouvelle donnée en json et ajoute au localStorage
 
             if (item.qty === 0) { // si la quantité atteint 0, le produit est supprimé
                 deleteProduct(product);
             }
-            quantityDisplay(); // mets la page à jour
+            cartDisplay(); // mise à jour de la page
         }
     });
 }
 
-// fonction pour augmenter la quantité
-function increaseQty (product) {
-
-    itemDetail.forEach ((item) => {
-        if (item.id == product.dataset.productid && item.lense == product.dataset.productlense) {
-            item.qty++;
-            localStorage.setItem('panier', JSON.stringify(itemDetail));
-            quantityDisplay();
+// fonction pour augmenter la quantité d'un produit
+function increaseQty(product) {
+    itemDetail.forEach ((item) => { // pour chaque produit
+        if (item.id == product.dataset.productid && item.lense == product.dataset.productlense) { // recherche de correspondance avec l'ID et la Lense
+            item.qty++; //quantité + 1
+            localStorage.setItem('panier', JSON.stringify(itemDetail)); //convertit la nouvelle donnée en json et ajoute au localStorage
+            cartDisplay(); // mise à jour de la page
         }
     });
 }
 
 // fonction pour supprimer un produit
-function deleteProduct (product) {
-        itemDetail.forEach ((item, index) => {
+function deleteProduct(product) {
+    itemDetail.forEach ((item, index) => {
         if (item.id == product.dataset.productid && item.lense == product.dataset.productlense) {
-            itemDetail.splice(index, 1); // 
+            itemDetail.splice(index, 1); // Retire la ligne correspondant à l'index à supprimer du localStorage
             localStorage.setItem('panier', JSON.stringify(itemDetail));
-            quantityDisplay();
+            cartDisplay();
         }
     });
 }
 
-//fonction info panier vide
-function alertEmptyCart () {
+// fonction info panier vide
+function alertEmptyCart() {
 let htmlError=
 `<div class="alert alert-info m-3" role="alert">
     Votre panier est vide.
@@ -200,17 +202,28 @@ let htmlError=
 itemSelection.innerHTML = htmlError;
 }
 
-//fonction pour confirmer l'annulation du panier, puis le vider si on clique 'OK' (vide le local storage + affichage info Panier Vide)
-function confirmAlertEmptyCart () {
+// fonction pour confirmer l'annulation du panier, puis le vider si on clique 'OK' (vide le local storage + affichage info Panier Vide)
+function confirmAlertEmptyCart() {
     if (confirm ('Cette action va vider le contenu de votre Panier, si vous souhaitez annuler votre commande, veuillez cliquez sur OK')) {
-        localStorage.removeItem('panier');
+        localStorage.removeItem('panier'); //  vide le contenu du panier (localStorage)
         alertEmptyCart();
     }
 }
 
+// fonction condition de validation de l'email
+function validateEmail() {
+    let emailReg = new RegExp(/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/i); // expression régulière pour définir le format du mail
+    let valid = emailReg.test(document.getElementById('email').value); //comparaison avec le mail rentré par l'utilisateur
+
+    if(!valid) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 // fonction pour envoyer le formulaire
-function getForm () {
+function getForm() {
     //récupération des informations personnelles
     let contact = {
         'firstName': document.getElementById('firstname').value,
@@ -220,21 +233,20 @@ function getForm () {
         'email': document.getElementById('email').value
     }
 
-    // récupération des infos du produit choisi (id) et ajouté à productInfo
     let products = [];
 
+    // récupération des infos du/des produit/s choisi/s (id) et ajouté à productInfo
     if (itemDetail !== null) {
         itemDetail.forEach(product => {
             products.push(product.id);
         })
     }
-    //les informations personnelles et celles du produit sont envoyées dans la fonction post()
+    //les informations personnelles et celles du produit sont converties en JSON
     return JSON.stringify({ contact, products });
 };
 
-
+//Fonction pour poster les informations récupérées dans le formulaire et la fonction getForm()
 function postForm(orderDetails) {
-    console.log(orderDetails);
     fetch('http://localhost:3000/api/cameras/order', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -248,9 +260,7 @@ function postForm(orderDetails) {
         localStorage.setItem('contact', orderDetails);
         localStorage.setItem('orderId', JSON.stringify(order.orderId));
         localStorage.setItem('total', JSON.stringify(totalPrice));
-        localStorage.removeItem('panier');
+        localStorage.removeItem('panier'); 
         window.location.replace("./confirm.html");
-
-        console.log(totalPrice);
     })
 }

@@ -1,10 +1,10 @@
 let url = 'http://localhost:3000/api/cameras';
+let main = document.getElementById('main');
 
 
 fetch(url) //recherche dans l'url
     .then((response) => {
         response.json().then((elements) => {
-            let main = document.getElementById('main');
             let row = document.createElement('DIV');
             row.className = "row";
             main.appendChild(row);
@@ -56,17 +56,11 @@ fetch(url) //recherche dans l'url
             });
         })
     })
-
-.catch (e => {
-    errorMessage();
-});
-
-function errorMessage() {
-    let divError = document.createElement('div');
-    divError.className = 'alert alert-warning';
-    divError.setAttribute('role', 'alert');
-    divError.textContent = "Oups! Il semble qu'il y ait un problème de réseau. Veuillez réessayer plus tard.";
-    let main = document.getElementById('main');
-
-    main.appendChild('divError');
-}
+    .catch(function(error) { //fonction affichant le message d'erreur en cas de rejet de la promesse
+        let errorMessage = document.createElement('div');
+        errorMessage.className = 'alert alert-danger';
+        errorMessage.setAttribute('role', 'alert');
+        errorMessage.textContent = 'Oups! Il y a eu un problème... Veuillez réessayer plus tard.';
+        main.appendChild(errorMessage);
+        console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
+      });
