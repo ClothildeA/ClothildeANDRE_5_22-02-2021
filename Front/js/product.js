@@ -89,7 +89,7 @@ fetch(url) //recherche dans l'url
 
                     //Création de la div englobant txt et options
                     let divSelect = document.createElement('div');
-                    divSelect.className = 'd-flex justify-content-between justify-content-lg-around';
+                    divSelect.className = 'd-flex justify-content-between justify-content-lg-around mt-3 mb-3';
                     cardBody.appendChild(divSelect);
 
                     //Ajout du texte 'Choisir une option'
@@ -119,21 +119,21 @@ fetch(url) //recherche dans l'url
                     }
 
                     //Bouton permettant d'ajouter au panier
+                    let cardBtn = document.createElement('button');
+                    cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon col-4';
+                    cardBtn.id = 'addtocart';
+                    cardBtn.textContent = 'Ajouter';
+                    cardBtn.setAttribute('role', 'button');
+                    cardBody.appendChild(cardBtn);
+
+                    //Bouton permettant de revenir à la liste des produits
                     let cardBtnIndex = document.createElement('a');
-                    cardBtnIndex.className = 'btn btn-outline-info m-4';
+                    cardBtnIndex.className = 'btn btn-outline-info shadow m-3 p-2 col-7 back-btn';
                     cardBtnIndex.id = 'index-btn';
                     cardBtnIndex.textContent = 'Retour à la liste des produits';
                     cardBtnIndex.setAttribute('role', 'button');
                     cardBtnIndex.href = 'index.html';
                     cardBody.appendChild(cardBtnIndex);
-
-                    //Bouton permettant d'ajouter au panier
-                    let cardBtn = document.createElement('button');
-                    cardBtn.className = 'btn btn-light m-3 p-2 shadow cart_icon';
-                    cardBtn.id = 'addtocart';
-                    cardBtn.textContent = 'Ajouter';
-                    cardBtn.setAttribute('role', 'button');
-                    cardBody.appendChild(cardBtn);
 
                     let addToCart = document.getElementById('addtocart');
                     addToCart.addEventListener('click', () => {

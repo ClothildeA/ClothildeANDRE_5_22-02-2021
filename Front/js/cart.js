@@ -106,7 +106,7 @@ function cartDisplay() {
     let increaseBtn = document.querySelectorAll('.increase_btn');
     increaseBtn.forEach((btn) => {
         btn.addEventListener('click', () => {
-            let product = btn.closest('.product');
+            let product = btn.closest('.product'); //récupère le parent le plus proche avec la class .product
             increaseQty(product);
         })
     })
@@ -154,7 +154,7 @@ function cartDisplay() {
 }
 
 
-///////////// FONCTIONS /////////////
+///////////// AUTRES FONCTIONS /////////////
 
 // fonction pour diminuer la quantité (quand la quantité est à 0, le produit est supprimé du panier)
 function decreaseQty(product) {
@@ -195,11 +195,11 @@ function deleteProduct(product) {
 
 // fonction info panier vide
 function alertEmptyCart() {
-let htmlError=
-`<div class="alert alert-info m-3" role="alert">
-    Votre panier est vide.
-</div>`;
-itemSelection.innerHTML = htmlError;
+    let htmlError=
+    `<div class="alert alert-info m-3" role="alert">
+        Votre panier est vide.
+    </div>`;
+    itemSelection.innerHTML = htmlError;
 }
 
 // fonction pour confirmer l'annulation du panier, puis le vider si on clique 'OK' (vide le local storage + affichage info Panier Vide)
@@ -247,7 +247,7 @@ function getForm() {
 
 //Fonction pour poster les informations récupérées dans le formulaire et la fonction getForm()
 function postForm(orderDetails) {
-    fetch('http://localhost:3000/api/cameras/order', {
+    fetch(urlOrder, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         mode:'cors',

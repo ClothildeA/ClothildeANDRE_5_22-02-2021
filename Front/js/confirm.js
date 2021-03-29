@@ -32,4 +32,3 @@ endOfOrder.addEventListener('click', () => {
     localStorage.removeItem('orderId');
     localStorage.removeItem('total');
 });
-

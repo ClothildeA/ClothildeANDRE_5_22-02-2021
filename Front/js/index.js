@@ -5,6 +5,8 @@ let main = document.getElementById('main');
 fetch(url) //recherche dans l'url
     .then((response) => {
         response.json().then((elements) => {
+
+            //Création d'une div englobant les différents items
             let row = document.createElement('DIV');
             row.className = "row";
             main.appendChild(row);
@@ -64,4 +66,4 @@ fetch(url) //recherche dans l'url
         errorMessage.textContent = 'Oups! Il y a eu un problème... Veuillez réessayer plus tard.';
         main.appendChild(errorMessage);
         console.log('Il y a eu un problème avec l\'opération fetch: ' + error.message);
-      });
+    });
