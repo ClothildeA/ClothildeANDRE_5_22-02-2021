@@ -40,6 +40,7 @@ fetch(url) //recherche dans l'url
                     //image du produit (img)
                     let imgProduct = document.createElement('img');
                     imgProduct.src = element.imageUrl;
+                    imgProduct.alt = "photo de l'appareil " + element.name;
                     divImg.appendChild(imgProduct);
 
                     // div description du produit
@@ -117,14 +118,14 @@ fetch(url) //recherche dans l'url
                         selectList.appendChild(option);
                     }
 
-                                        //Bouton permettant d'ajouter au panier
-                                        let cardBtnIndex = document.createElement('a');
-                                        cardBtnIndex.className = 'btn btn-outline-info m-4';
-                                        cardBtnIndex.id = 'index-btn';
-                                        cardBtnIndex.textContent = 'Retour à la liste des produits';
-                                        cardBtnIndex.setAttribute('role', 'button');
-                                        cardBtnIndex.href = 'index.html';
-                                        cardBody.appendChild(cardBtnIndex);
+                    //Bouton permettant d'ajouter au panier
+                    let cardBtnIndex = document.createElement('a');
+                    cardBtnIndex.className = 'btn btn-outline-info m-4';
+                    cardBtnIndex.id = 'index-btn';
+                    cardBtnIndex.textContent = 'Retour à la liste des produits';
+                    cardBtnIndex.setAttribute('role', 'button');
+                    cardBtnIndex.href = 'index.html';
+                    cardBody.appendChild(cardBtnIndex);
 
                     //Bouton permettant d'ajouter au panier
                     let cardBtn = document.createElement('button');

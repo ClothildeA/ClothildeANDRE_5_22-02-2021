@@ -26,6 +26,7 @@ fetch(url) //recherche dans l'url
                 //image du produit (img)
                 let cardImg = document.createElement('img');
                 cardImg.src = element.imageUrl;
+                cardImg.alt = "photo de l'appareil " + element.name;
                 card.appendChild(cardImg);
 
                 //contenu des caractéristiques (body)

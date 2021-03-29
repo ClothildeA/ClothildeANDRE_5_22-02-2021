@@ -26,7 +26,7 @@ function cartDisplay() {
         `<div class="product card mb-3 p-2" style="max-width: 700px;" data-productid="${product.id}" data-productlense="${product.lense}">
             <div class="row g-0">
                 <div class="col-md-4 d-flex align-items-center">
-                    <img src="${product.image}" alt="photo du produit">
+                    <img src="${product.image}" alt="photo de l'appareil ${product.name}">
                 </div>
                 <div class="col-md-8 p-0">
                     <div class="card-body">
